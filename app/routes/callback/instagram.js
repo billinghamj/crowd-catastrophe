@@ -91,7 +91,7 @@ function ingest(req, res, next) {
 									})
 									.success(function (media, created) {
 										var tags = [];
-										for (var i = 0; i < image.tags.length; i++) {
+										for (var i = 0; i < image.tags.length; i++)
 										 	tags.push(tags[image.tags[i]]);
 
 										media.addTags(tags).error(function (err) {
