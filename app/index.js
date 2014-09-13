@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var expressHandlebars = require('express-handlebars');
 var http = require('http');
 var path = require('path');
@@ -15,6 +16,9 @@ app.engine('handlebars', expressHandlebars({
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'handlebars');
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 routes(app);
 
