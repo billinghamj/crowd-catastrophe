@@ -10,6 +10,27 @@ function verify(req, res, next) {
 }
 
 function ingest(req, res, next) {
-	console.log(req.body);
 	res.status(200).end();
+
+	var changes = req.body;
+
+	for (var i = 0; i < changes.length; i++) {
+		var change = changes[i];
+
+		Instagram.tags.recent({
+			name: change.object_id,
+
+			complete: function (data, pagination) {
+				console.log(data);
+				console.log('#' + change.object_id + ': ');
+			},
+
+			error: function (errorMessage, errorObject, caller) {
+				console.log('error!');
+				console.log(errorMessage);
+				console.log(errorObject);
+				console.log(caller);
+			}
+		});
+	}
 }
