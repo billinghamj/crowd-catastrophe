@@ -4,14 +4,12 @@
 			<h1>{{{name}}}</h1>
 			<p>Please confirm that you wish to delete this issue</p>
 
-			<form class="form-horizontal" action="/issues/{{{id}}}" method="POST">
+			<form action="/issues/{{{id}}}" method="POST">
 				<input type="hidden" name="_method" value="DELETE" />
 
 				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-danger">Delete</button>
-						<a href="/issues/{{{id}}}" class="btn btn-link">Cancel</a>
-					</div>
+					<button type="submit" class="btn btn-danger">Delete</button>
+					<a href="/issues/{{{id}}}" class="btn btn-link">Cancel</a>
 				</div>
 			</form>
 		{{/with}}
