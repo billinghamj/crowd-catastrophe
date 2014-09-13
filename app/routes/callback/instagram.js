@@ -6,7 +6,9 @@ function setup(app) {
 }
 
 function verify(req, res, next) {
-	app.get('instagram').subscriptions.handshake(request, response);
+	var inst = req.app.get('instagram');
+
+	inst.subscriptions.handshake(request, response);
 }
 
 function ingest(req, res, next) {
