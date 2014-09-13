@@ -47,14 +47,12 @@ function ingest(req, res, next) {
 				var models = req.app.get('models');
 
 				models.Tag.findAll().success(function (tags) {
-					console.log(tagsNeeded);
 					// remove tags we already have
 					for (var i = 0; i < tags.length; i++)
 					{
 						var j = tagsNeeded.indexOf(tags[i].name);
 						if (j) tagsNeeded[j] = null;
 					}
-					console.log(tagsNeeded);
 
 					// remove null entries
 					var cleanedTags = [];
@@ -63,12 +61,10 @@ function ingest(req, res, next) {
 							cleanedTags.push(tagsNeeded[i]);
 					tagsNeeded = cleanedTags;
 					delete cleanedTags;
-					console.log(tagsNeeded);
 
 					// create new tags
 					for (var i = 0; i < tagsNeeded.length; i++)
 						tagsNeeded[i] = { name: tagsNeeded[i] };
-					console.log(tagsNeeded);
 
 					models.Tag.bulkCreate(tagsNeeded)
 						.error(function (err) {
@@ -76,6 +72,7 @@ function ingest(req, res, next) {
 							console.log(err);
 						})
 						.success(function (createdTags) {
+							console.log('a');
 							tags = tags.concat(createdTags);
 
 							// array<Tag> -> map<string, Tag>
@@ -84,6 +81,7 @@ function ingest(req, res, next) {
 								tagMap[tags[i].name] = tags[i];
 							tags = tagMap;
 							delete tagMap;
+							console.log('b');
 
 							for (var i = 0; i < images.length; i++) {
 								var image = images[i];
@@ -97,6 +95,7 @@ function ingest(req, res, next) {
 									thumbnailUrl: thumb,
 									imageUrl: standard
 								};
+							console.log('c');
 
 								models.Media.create(media)
 									.error(function (err) {
@@ -104,6 +103,8 @@ function ingest(req, res, next) {
 										console.log(err);
 									})
 									.success(function (media, created) {
+							console.log('d');
+
 										var tags = [];
 										for (var i = 0; i < image.tags.length; i++)
 										 	tags.push(tags[image.tags[i]]);
