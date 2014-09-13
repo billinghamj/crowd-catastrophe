@@ -10,7 +10,8 @@ function setup(app) {
 		app.get('databasePassword'),
 		{
 			host: app.get('databaseHost'),
-			port: app.get('databasePort')
+			port: app.get('databasePort'),
+			logging: false
 		});
 
 	var m = models(sequelize);
