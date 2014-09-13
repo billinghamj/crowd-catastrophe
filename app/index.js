@@ -1,12 +1,12 @@
 var express = require('express');
-var exphbs = require('express-handlebars');
+var expressHandlebars = require('express-handlebars');
 var http = require('http');
 var path = require('path');
 
 var routes = require('./routes');
 var app = express();
 
-app.engine('handlebars', exphbs({
+app.engine('handlebars', expressHandlebars({
 	defaultLayout: 'main',
 	layoutsDir: 'app/views/layouts/',
 	partialsDir: 'app/views/partials/'
