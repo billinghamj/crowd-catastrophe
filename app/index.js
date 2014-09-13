@@ -20,9 +20,9 @@ app.engine('handlebars', expressHandlebars({
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'handlebars');
-app.set('databaseName', process.env.DBNAME);
-app.set('databaseUsername', process.env.DBUSER);
-app.set('databasePassword', process.env.DBPASS);
+app.set('databaseName', process.env.DATABASE_NAME);
+app.set('databaseUsername', process.env.DATABASE_USERNAME);
+app.set('databasePassword', process.env.DATABASE_PASSWORD);
 app.set('instagram', Instagram);
 
 app.use(bodyParser.urlencoded({ extended: true }));
