@@ -49,7 +49,11 @@ function update(req, res, next) {
 	req.app.get('models')
 		.Issue.find({ where: { id: req.params.id } })
 		.success(function (issue) {
-			issue.updateAttributes(req.body)
+			req.body.tags = req.body.tags.split(/\s/);
+
+			issue.set(req.body, { include: [req.app.get('models').Tag] });
+
+			issue.save()
 				.success(function (issue) {
 					res.redirect(303, '/issues/' + issue.id);
 				})
@@ -86,7 +90,6 @@ function updatePage(req, res, next) {
 			issue.getTags()
 				.success(function (tags) {
 					issue.tags = tags.map(function (t) { return t.name; }).join('\r\n');
-					console.log(issue);
 					res.render('issue/update', { issue: issue });
 				});
 		})
