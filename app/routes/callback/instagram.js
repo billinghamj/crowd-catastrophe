@@ -11,7 +11,18 @@ function verify(req, res, next) {
 	inst.subscriptions.handshake(req, res);
 }
 
+var cooloff = false;
+
 function ingest(req, res, next) {
+	if (cooloff)
+		return;
+
+	cooloff = true;
+
+	setTimeout(function () {
+		cooloff = false;
+	}, 15 * 1000);
+
 	var inst = req.app.get('instagram');
 	var changes = req.body;
 
