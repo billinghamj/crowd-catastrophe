@@ -4,7 +4,7 @@ module.exports = {
 		  'Media',
 		  {
 				id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-				instagramId: { type: DataTypes.STRING, allowNull: false },
+				instagramId: { type: DataTypes.STRING, allowNull: false, unique: true },
 				date: { type: DataTypes.DATE, allowNull: true },
 				thumbnailUrl: { type: DataTypes.STRING, allowNull: false },
 				imageUrl: { type: DataTypes.STRING, allowNull: false },
@@ -24,7 +24,7 @@ module.exports = {
 		  'Issue',
 		  {
 				id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-				name: { type: DataTypes.STRING, allowNull: false },
+				name: { type: DataTypes.STRING, allowNull: false, unique: true  },
 				description: { type: DataTypes.STRING, allowNull: true },
 				date: { type: DataTypes.DATE, allowNull: true },
 				createdAt: {
@@ -42,7 +42,7 @@ module.exports = {
 		migration.createTable(
 		  'Tag',
 		  {
-				name: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
+				name: { type: DataTypes.STRING, allowNull: false, primaryKey: true, unique: true },
 				createdAt: {
 		      type: DataTypes.DATE
 		    },
