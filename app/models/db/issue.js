@@ -1,5 +1,4 @@
 var Sequelize = require('sequelize');
-var Tag = require('./tag');
 
 module.exports = setup;
 
@@ -10,11 +9,6 @@ function setup(sequelize) {
 		description: { type: Sequelize.STRING, allowNull: true },
 		date: { type: Sequelize.DATE, allowNull: true }
 	});
-
-	if (typeof Tag === 'function')
-		Tag = Tag(sequelize);
-
-	Issue.hasMany(Tag, {through: 'issue_tags'});
 
 	return Issue;
 }
