@@ -28,6 +28,30 @@ module.exports = {
 		);
 
 		migration.createTable(
+			'issue_tags',
+			{
+				id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+				tag_id: { type: DataTypes.INTEGER, allowNull: false, unique: false  },
+				issue_id: { type: DataTypes.INTEGER, allowNull: false, unique: false },
+				createdAt: { type: DataTypes.DATE },
+				updatedAt: { type: DataTypes.DATE }
+			},
+			{ engine: 'InnoDB', charset: 'latin1' }
+		);
+
+		migration.createTable(
+			'tag_media',
+			{
+				id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+				tag_id: { type: DataTypes.INTEGER, allowNull: false, unique: false  },
+				media_id: { type: DataTypes.INTEGER, allowNull: false, unique: false },
+				createdAt: { type: DataTypes.DATE },
+				updatedAt: { type: DataTypes.DATE }
+			},
+			{ engine: 'InnoDB', charset: 'latin1' }
+		);
+
+		migration.createTable(
 			'tags',
 			{
 				name: { type: DataTypes.STRING, allowNull: false, primaryKey: true, unique: true },
