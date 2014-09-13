@@ -20,11 +20,15 @@ function ingest(req, res, next) {
 	for (var i = 0; i < changes.length; i++) {
 		var change = changes[i];
 
+		console.log('notified of change to #' + change.object_id);
+
 		inst.tags.recent({
 			name: change.object_id,
 
 			complete: function (images, pagination) {
 				var objects = [];
+
+				console.log('retrieved ' + images.length + ' images for #' + change.object_id);
 
 				for (var i = 0; i < images.length; i++) {
 					var image = images[i];
