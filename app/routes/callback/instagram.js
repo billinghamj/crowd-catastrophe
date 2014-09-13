@@ -28,39 +28,39 @@ function ingest(req, res, next) {
 			complete: function (images, pagination) {
 
 				console.log('retrieved ' + images.length + ' images for #' + change.object_id);
-
-				for (var i = 0; i < images.length; i++) {
-					var image = images[i];
-
-					var thumb = image.images.thumbnail.url;
-					var standard = image.images.standard_resolution.url;
-
-					req.app.get('models').Tag
-						.findOrCreate({ name: change.object_id })
+				req.app.get('models').Tag
+					.findOrCreate({ name: change.object_id })
 						.success(function(tag, created) {
-							var object = {
-								instagramId: image.id,
-								date: new Date(image.created_time * 1000),
-								thumbnailUrl: thumb,
-								imageUrl: standard
-							};
+							for (var i = 0; i < images.length; i++) {
+								var image = images[i];
 
-							req.app.get('models').Media.create(object)
-								.success(function(media, created) {
-									tag.addMedia(media).error(function (err) {
-										console.log('error adding media to tag');
+								var thumb = image.images.thumbnail.url;
+								var standard = image.images.standard_resolution.url;
+
+								var object = {
+									instagramId: image.id,
+									date: new Date(image.created_time * 1000),
+									thumbnailUrl: thumb,
+									imageUrl: standard
+								};
+
+								req.app.get('models').Media.create(object)
+									.success(function(media, created) {
+										tag.addMedia(media).error(function (err) {
+											console.log('error adding media to tag');
+											console.log(err);
+										});
+									})
+									.error(function (err) {
+										console.log('error saving media');
 										console.log(err);
 									});
-								})
-								.error(function (err) {
-									console.log('error saving media');
-									console.log(err);
-								});
+							}
 						})
 						.error(function (err) {
+							console.log('error getting tags');
 							console.log(err);
 						});
-				}
 			},
 
 			error: function (errorMessage, errorObject, caller) {
