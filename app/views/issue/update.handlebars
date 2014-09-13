@@ -3,7 +3,9 @@
 		{{#with issue}}
 			<h1>{{{name}}}</h1>
 
-			<form class="form-horizontal" action="/issues/{{{id}}}" method="PUT">
+			<form class="form-horizontal" action="/issues/{{{id}}}" method="POST">
+				<input type="hidden" name="_method" value="PUT" />
+
 				<div class="form-group">
 					<label for="form_name" class="col-sm-2 control-label">Name</label>
 
