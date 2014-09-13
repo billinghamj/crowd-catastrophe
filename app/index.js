@@ -4,6 +4,7 @@ var expressHandlebars = require('express-handlebars');
 var http = require('http');
 var path = require('path');
 var Instagram = require('instagram-node-lib');
+var db = require('./db');
 
 Instagram.set('client_id', process.env.INSTAGRAM_CLIENT_ID);
 Instagram.set('client_secret', process.env.INSTAGRAM_CLIENT_SECRET);
@@ -24,6 +25,7 @@ app.set('databaseName', process.env.DATABASE_NAME);
 app.set('databaseUsername', process.env.DATABASE_USERNAME);
 app.set('databasePassword', process.env.DATABASE_PASSWORD);
 app.set('instagram', Instagram);
+app.set('models', db(app));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
