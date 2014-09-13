@@ -47,12 +47,14 @@ function ingest(req, res, next) {
 				var models = req.app.get('models');
 
 				models.Tag.findAll().success(function (tags) {
+					console.log(tagsNeeded);
 					// remove tags we already have
 					for (var i = 0; i < tags.length; i++)
 					{
 						var j = tagsNeeded.indexOf(tags[i].name);
 						if (j) tagsNeeded[j] = null;
 					}
+					console.log(tagsNeeded);
 
 					// remove null entries
 					var cleanedTags = [];
@@ -61,10 +63,12 @@ function ingest(req, res, next) {
 							cleanedTags.push(tagsNeeded[i]);
 					tagsNeeded = cleanedTags;
 					delete cleanedTags;
+					console.log(tagsNeeded);
 
 					// create new tags
 					for (var i = 0; i < tagsNeeded.length; i++)
 						tagsNeeded[i] = { name: tagsNeeded[i] };
+					console.log(tagsNeeded);
 
 					models.Tag.bulkCreate(tagsNeeded)
 						.error(function (err) {
