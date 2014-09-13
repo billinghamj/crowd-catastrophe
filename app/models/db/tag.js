@@ -1,5 +1,5 @@
 var Sequelize = require('sequelize');
-var Picture = require('./image');
+var Media = require('./media');
 
 module.exports = setup;
 
@@ -8,10 +8,10 @@ function setup(sequelize) {
 		name: { type: Sequelize.STRING, allowNull: false, primaryKey: true }
 	});
 
-	if (typeof Picture === 'function')
-		Picture = Picture(sequelize);
+	if (typeof Media === 'function')
+		Media = Media(sequelize);
 
-	Tag.hasMany(Picture);
+	Tag.hasMany(Media);
 
 	return Tag;
 }
