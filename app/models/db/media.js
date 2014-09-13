@@ -5,7 +5,7 @@ module.exports = setup;
 function setup(sequelize) {
 	var Media = sequelize.define('Media', {
 		id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-		instagramId: { type: Sequelize.STRING, allowNull: false },
+		instagramId: { type: Sequelize.STRING, allowNull: false, unique: true },
 		date: { type: Sequelize.DATE, allowNull: true },
 		thumbnailUrl: { type: Sequelize.STRING, allowNull: false },
 		imageUrl: { type: Sequelize.STRING, allowNull: false }

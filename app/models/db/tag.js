@@ -5,7 +5,7 @@ module.exports = setup;
 
 function setup(sequelize) {
 	var Tag = sequelize.define('Tag', {
-		name: { type: Sequelize.STRING, allowNull: false, primaryKey: true }
+		name: { type: Sequelize.STRING, allowNull: false, primaryKey: true, unique: true }
 	});
 
 	if (typeof Media === 'function')

@@ -6,7 +6,7 @@ module.exports = setup;
 function setup(sequelize) {
 	var Issue = sequelize.define('Issue', {
 		id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-		name: { type: Sequelize.STRING, allowNull: false },
+		name: { type: Sequelize.STRING, allowNull: false, unique: true },
 		description: { type: Sequelize.STRING, allowNull: true },
 		date: { type: Sequelize.DATE, allowNull: true }
 	});
