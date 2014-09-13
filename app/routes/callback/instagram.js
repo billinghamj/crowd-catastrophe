@@ -50,7 +50,6 @@ function ingest(req, res, next) {
 					// remove tags we already have
 					for (var i = 0; i < tags.length; i++)
 					{
-						console.log(tags[i].name);
 						var j = tagsNeeded.indexOf(tags[i].name);
 						if (j) tagsNeeded[j] = null;
 					}
