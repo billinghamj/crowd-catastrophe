@@ -14,7 +14,7 @@ function setup(sequelize) {
 	if (typeof Tag === 'function')
 		Tag = Tag(sequelize);
 
-	Issue.hasMany(Tag);
+	Issue.hasMany(Tag, {through: 'issue_tags'});
 
 	return Issue;
 }
