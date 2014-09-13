@@ -52,8 +52,16 @@ function ingest(req, res, next) {
 					{
 						console.log(tags[i].name);
 						var j = tagsNeeded.indexOf(tags[i].name);
-						if (j) delete tagsNeeded[j];
+						if (j) tagsNeeded[j] = null;
 					}
+
+					// remove null entries
+					var cleanedTags = [];
+					for (var i = 0; i < tagsNeeded.length; i++)
+						if (tagsNeeded[i])
+							cleanedTags.push(tagsNeeded[i]);
+					tagsNeeded = cleanedTags;
+					delete cleanedTags;
 
 					// create new tags
 					for (var i = 0; i < tagsNeeded.length; i++)
