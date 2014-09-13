@@ -4,7 +4,7 @@ var Media = require('./media');
 module.exports = setup;
 
 function setup(sequelize) {
-	var Tag = sequelize.define('Tag', {
+	var Tag = sequelize.define('tags', {
 		name: { type: Sequelize.STRING, allowNull: false, primaryKey: true, unique: true }
 	});
 
