@@ -23,9 +23,15 @@ function ingest(req, res, next) {
 		inst.tags.recent({
 			name: change.object_id,
 
-			complete: function (data, pagination) {
-				console.log(data);
-				console.log('#' + change.object_id + ': ');
+			complete: function (images, pagination) {
+				for (var i = 0; i < images.length; i++) {
+					var image = images[i];
+
+					var thumb = image.images.thumbnail.url;
+					var standard = image.images.standard_resolution.url;
+
+					console.log('#' + change.object_id + ': ' + standard);
+				}
 			},
 
 			error: function (errorMessage, errorObject, caller) {
