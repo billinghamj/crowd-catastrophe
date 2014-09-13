@@ -9,6 +9,7 @@ function setup(sequelize) {
 	return {
 		Issue: Issue(sequelize),
 		Tag: Tag(sequelize),
-		Media: Media(sequelize)
+		Media: Media(sequelize),
+		_sequelize: sequelize
 	};
 }
