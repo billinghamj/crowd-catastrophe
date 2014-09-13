@@ -14,8 +14,10 @@ function verify(req, res, next) {
 var cooloff = false;
 
 function ingest(req, res, next) {
-	if (cooloff)
+	if (cooloff) {
+		res.status(200).end();
 		return;
+	}
 
 	cooloff = true;
 
