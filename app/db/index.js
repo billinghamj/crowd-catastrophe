@@ -12,6 +12,6 @@ function setup(app) {
 		app.get('databaseName'),
 		app.get('databaseUsername'),
 		app.get('databasePassword'));
-
+  console.log(sequelize)
 	return models(sequelize);
 }
