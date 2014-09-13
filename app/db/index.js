@@ -24,6 +24,7 @@ function setup(app) {
 	modelsObject.Tag.hasMany(modelsObject.Issue, {through: 'issue_tags'});
 	modelsObject.Issue.belongsTo(modelsObject.Tag, {through: 'issue_tags'});
 
-	sequelize.sync();
-	return modelsObject;
+	sequelize.sync().success(function() {
+		return modelsObject;
+	});
 }
