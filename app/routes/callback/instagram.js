@@ -6,7 +6,7 @@ function setup(app) {
 }
 
 function verify(req, res, next) {
-	res.send(req.query['hub.challenge']);
+	app.get('instagram').subscriptions.handshake(request, response);
 }
 
 function ingest(req, res, next) {
