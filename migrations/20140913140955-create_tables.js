@@ -11,7 +11,7 @@ module.exports = {
 		  },
 		  {
 		    engine: 'InnoDB', // default: 'InnoDB'
-		    charset: 'null' // default: null
+		    charset: 'latin1' // default: null
 		  }
 		)
 		migration.createTable(
@@ -24,7 +24,7 @@ module.exports = {
 		  },
 		  {
 		    engine: 'InnoDB', // default: 'InnoDB'
-		    charset: 'null' // default: null
+		    charset: 'latin1' // default: null
 		  }
 		)
 		migration.createTable(
@@ -34,7 +34,7 @@ module.exports = {
 			},
 		  {
 		    engine: 'InnoDB', // default: 'InnoDB'
-		    charset: 'null' // default: null
+		    charset: 'latin1' // default: null
 		  }
 		)
     done()
