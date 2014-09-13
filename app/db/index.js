@@ -8,10 +8,7 @@ function setup(app) {
 		app.get('databaseUsername'),
 		app.get('databasePassword'));
 
-	var sequelize = new Sequelize(
-		app.get('databaseName'),
-		app.get('databaseUsername'),
-		app.get('databasePassword'));
+	var sequelize = new Sequelize('mysql://'+app.get('databaseUsername')+':'+app.get('databasePassword')+'@127.0.0.1:3306/'+app.get('databaseName'), {});
   console.log(sequelize)
 	return models(sequelize);
 }
