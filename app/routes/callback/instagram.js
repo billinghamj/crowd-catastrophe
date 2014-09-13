@@ -101,7 +101,7 @@ function ingest(req, res, next) {
 									});
 							}
 						});
-				}
+				});
 			}
 		});
 	}
