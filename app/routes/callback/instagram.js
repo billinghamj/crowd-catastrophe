@@ -24,7 +24,7 @@ function ingest(req, res, next) {
 			name: change.object_id,
 
 			complete: function (images, pagination) {
-				console.log('#' + change.object_id + ':');
+				var objects = [];
 
 				for (var i = 0; i < images.length; i++) {
 					var image = images[i];
@@ -32,8 +32,21 @@ function ingest(req, res, next) {
 					var thumb = image.images.thumbnail.url;
 					var standard = image.images.standard_resolution.url;
 
-					console.log(standard);
+					objects.push({
+						instagramId: image.id,
+						date: new Date(image.created_time * 1000),
+						thumbnailUrl: thumb,
+						imageUrl: standard
+					});
 				}
+
+				Media.bulkCreate(objects)
+					.success(function () {
+						console.log('success');
+					})
+					.error(function (err) {
+						console.log(err);
+					});
 			},
 
 			error: function (errorMessage, errorObject, caller) {
