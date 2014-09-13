@@ -49,13 +49,17 @@ function update(req, res, next) {
 	req.app.get('models')
 		.Issue.find({ where: { id: req.params.id } })
 		.success(function (issue) {
-			req.body.tags = req.body.tags.split(/\s/);
+			var tags = req.body.tags.split(/\s/);
 
-			issue.set(req.body, { include: [req.app.get('models').Tag] });
-
-			issue.save()
+			issue.updateAttributes(req.body)
 				.success(function (issue) {
-					res.redirect(303, '/issues/' + issue.id);
+					issue.setTags(tags)
+						.success(function () {
+							res.redirect(303, '/issues/' + issue.id);
+						})
+						.error(function () {
+							res.redirect(303, '/issues/' + issue.id + '/edit?failure');
+						});
 				})
 				.error(function () {
 					res.redirect(303, '/issues/' + issue.id + '/edit?failure');
