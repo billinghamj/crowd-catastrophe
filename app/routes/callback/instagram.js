@@ -107,6 +107,9 @@ function ingest(req, res, next) {
 
 								models.Media.create(media)
 									.error(function (err) {
+										if (err.code === 'ER_DUP_ENTRY')
+											return;
+
 										console.log('error creating media');
 										console.log(err);
 									})
