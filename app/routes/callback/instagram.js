@@ -58,12 +58,14 @@ function ingest(req, res, next) {
 				var models = req.app.get('models');
 
 				models.Tag.findAll().success(function (tags) {
+					console.log(tagsNeeded);
 					// remove tags we already have
 					for (var i = 0; i < tags.length; i++) {
 						console.log(tags[i].name);
 						var j = tagsNeeded.indexOf(tags[i].name);
 						if (j) tagsNeeded[j] = null;
 					}
+					console.log(tagsNeeded);
 
 					// remove null entries
 					var cleanedTags = [];
