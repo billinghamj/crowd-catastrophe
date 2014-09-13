@@ -14,10 +14,12 @@ function verify(req, res, next) {
 var cooloff = false;
 
 function ingest(req, res, next) {
-	if (cooloff)
+	if (cooloff) {
+		res.status(200).end();
 		return;
+	}
 
-	cooloff = true;
+	//cooloff = true;
 
 	setTimeout(function () {
 		cooloff = false;
@@ -60,9 +62,8 @@ function ingest(req, res, next) {
 				models.Tag.findAll().success(function (tags) {
 					// remove tags we already have
 					for (var i = 0; i < tags.length; i++) {
-						console.log(tags[i].name);
 						var j = tagsNeeded.indexOf(tags[i].name);
-						if (j) tagsNeeded[j] = null;
+						if (j !== -1) tagsNeeded[j] = null;
 					}
 
 					// remove null entries
