@@ -83,6 +83,7 @@ function updatePage(req, res, next) {
 	req.app.get('models')
 		.Issue.find({ where: { id: req.params.id } })
 		.success(function (issue) {
+			console.log(issue.tags);
 			res.render('issue/update', { issue: issue });
 		})
 		.error(function () {
