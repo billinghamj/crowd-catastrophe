@@ -25,48 +25,81 @@ function ingest(req, res, next) {
 		inst.tags.recent({
 			name: change.object_id,
 
-			complete: function (images, pagination) {
+			error: function (errorMessage, errorObject, caller) {
+				console.log('error getting media');
+				console.log(errorMessage);
+				console.log(errorObject);
+			},
 
+			complete: function (images, pagination) {
 				console.log('retrieved ' + images.length + ' images for #' + change.object_id);
-				req.app.get('models').Tag
-					.findOrCreate({ name: change.object_id })
-						.success(function(tag, created) {
+
+				// string array of all required tags
+				var tagsNeeded = [];
+				for (var i = 0; i < images.length; i++)
+					tagsNeeded = tagsNeeded.concat(images[i].tags);
+
+				var models = req.app.get('models');
+
+				models.Tag.findAll().success(function (tags) {
+					// remove tags we already have
+					for (var i = 0; i < tags.length; i++)
+						if (var j = tagsNeeded.indexOf(tags[i].name))
+							delete tagsNeeded[j];
+
+					console.log(tags);
+					console.log(tagsNeeded);
+
+					// create new tags
+					for (var i = 0; i < tagsNeeded.length; i++)
+						tagsNeeded[i] = { name: tagsNeeded[i] };
+
+					models.Tag.bulkCreate(tagsNeeded)
+						.error(function (err) {
+							console.log('error creating new tags');
+							console.log(err);
+						})
+						.success(function (createdTags) {
+							tags = tags.concat(createdTags);
+
+							// array<Tag> -> map<string, Tag>
+							tagMap = {};
+							for (var i = 0; i < tags.length; i++)
+								tagMap[tags[i].name] = tags[i];
+							tags = tagMap;
+							delete tagMap;
+
 							for (var i = 0; i < images.length; i++) {
 								var image = images[i];
 
 								var thumb = image.images.thumbnail.url;
 								var standard = image.images.standard_resolution.url;
 
-								var object = {
+								var media = {
 									instagramId: image.id,
 									date: new Date(image.created_time * 1000),
 									thumbnailUrl: thumb,
 									imageUrl: standard
 								};
 
-								req.app.get('models').Media.create(object)
-									.success(function(media, created) {
-										tag.addMedia(media).error(function (err) {
-											console.log('error adding media to tag');
+								models.Media.create(media)
+									.error(function (err) {
+										console.log('error creating media');
+										console.log(err);
+									})
+									.success(function (media, created) {
+										var tags = [];
+										for (var i = 0; i < image.tags.length; i++) {
+										 	tags.push(tags[image.tags[i]]);
+
+										media.addTags(tags).error(function (err) {
+											console.log('error adding tags to media');
 											console.log(err);
 										});
-									})
-									.error(function (err) {
-										console.log('error saving media');
-										console.log(err);
 									});
 							}
-						})
-						.error(function (err) {
-							console.log('error getting tags');
-							console.log(err);
 						});
-			},
-
-			error: function (errorMessage, errorObject, caller) {
-				console.log('error getting media');
-				console.log(errorMessage);
-				console.log(errorObject);
+				}
 			}
 		});
 	}
