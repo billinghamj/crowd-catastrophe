@@ -6,10 +6,40 @@ function setup(app) {
 }
 
 function verify(req, res, next) {
-	res.send(req.query['hub.challenge']);
+	var inst = req.app.get('instagram');
+
+	inst.subscriptions.handshake(req, res);
 }
 
 function ingest(req, res, next) {
-	console.log(req.body);
+	var inst = req.app.get('instagram');
+	var changes = req.body;
+
 	res.status(200).end();
+
+	for (var i = 0; i < changes.length; i++) {
+		var change = changes[i];
+
+		inst.tags.recent({
+			name: change.object_id,
+
+			complete: function (images, pagination) {
+				for (var i = 0; i < images.length; i++) {
+					var image = images[i];
+
+					var thumb = image.images.thumbnail.url;
+					var standard = image.images.standard_resolution.url;
+
+					console.log('#' + change.object_id + ': ' + standard);
+				}
+			},
+
+			error: function (errorMessage, errorObject, caller) {
+				console.log('error!');
+				console.log(errorMessage);
+				console.log(errorObject);
+				console.log(caller);
+			}
+		});
+	}
 }

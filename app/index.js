@@ -3,6 +3,10 @@ var bodyParser = require('body-parser');
 var expressHandlebars = require('express-handlebars');
 var http = require('http');
 var path = require('path');
+var Instagram = require('instagram-node-lib');
+
+Instagram.set('client_id', process.env.INSTAGRAM_CLIENT_ID);
+Instagram.set('client_secret', process.env.INSTAGRAM_CLIENT_SECRET);
 
 var routes = require('./routes');
 var app = express();
@@ -19,6 +23,7 @@ app.set('view engine', 'handlebars');
 app.set('databaseName', process.env.DBNAME);
 app.set('databaseUsername', process.env.DBUSER);
 app.set('databasePassword', process.env.DBPASS);
+app.set('instagram', Instagram);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
