@@ -27,6 +27,8 @@ app.set('databasePassword', process.env.DATABASE_PASSWORD);
 app.set('instagram', Instagram);
 app.set('models', db(app));
 
+console.log(process.env);
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
