@@ -3,8 +3,9 @@
 		<h1>Issues</h1>
 
 		<ul>
-			<li>Issue 1</li>
-			<li>Issue 2</li>
+			{{#each issues}}
+				<li><a href="/issues/{{{id}}}">{{{name}}}</a></li>
+			{{/each}}
 		</ul>
 	</div>
 </div>
