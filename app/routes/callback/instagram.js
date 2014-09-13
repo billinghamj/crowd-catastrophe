@@ -72,7 +72,6 @@ function ingest(req, res, next) {
 							console.log(err);
 						})
 						.success(function (createdTags) {
-							console.log('a');
 							tags = tags.concat(createdTags);
 
 							// array<Tag> -> map<string, Tag>
@@ -81,7 +80,6 @@ function ingest(req, res, next) {
 								tagMap[tags[i].name] = tags[i];
 							tags = tagMap;
 							delete tagMap;
-							console.log('b');
 
 							for (var i = 0; i < images.length; i++) {
 								var image = images[i];
@@ -95,7 +93,6 @@ function ingest(req, res, next) {
 									thumbnailUrl: thumb,
 									imageUrl: standard
 								};
-							console.log('c');
 
 								models.Media.create(media)
 									.error(function (err) {
@@ -103,13 +100,11 @@ function ingest(req, res, next) {
 										console.log(err);
 									})
 									.success(function (media, created) {
-							console.log('d');
-
-										var tags = [];
+										var mediaTags = [];
 										for (var i = 0; i < image.tags.length; i++)
-										 	tags.push(tags[image.tags[i]]);
+										 	mediaTags.push(tags[image.tags[i]]);
 
-										media.setTags(tags)
+										media.setTags(mediaTags)
 											.error(function (err) {
 												console.log('error adding tags to media');
 												console.log(err);
