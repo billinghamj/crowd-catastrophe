@@ -53,13 +53,31 @@ function update(req, res, next) {
 
 			issue.updateAttributes(req.body)
 				.success(function (issue) {
-					issue.setTags(tags)
-						.success(function () {
-							res.redirect(303, '/issues/' + issue.id);
-						})
-						.error(function () {
-							res.redirect(303, '/issues/' + issue.id + '/edit?failure');
-						});
+					var tagObjs = [];
+
+					function success(tag) {
+						tagObjs.push(tag);
+
+						if (tagObjs.length !== tags.length)
+							return;
+
+						issue.setTags(tagObjs)
+							.success(function () {
+								res.redirect(303, '/issues/' + issue.id);
+							})
+							.error(function () {
+								res.redirect(303, '/issues/' + issue.id + '/edit?failure');
+							});
+					}
+
+					for (var i = 0; i < tags.length; i++)
+						req.app.get('models')
+							.Tag.findOrCreate({ name: tags[i] })
+							.success(success)
+							.error(function (err) {
+								console.log('fuckssake');
+								console.log(err);
+							});
 				})
 				.error(function () {
 					res.redirect(303, '/issues/' + issue.id + '/edit?failure');
