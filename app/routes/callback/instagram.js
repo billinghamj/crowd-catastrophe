@@ -44,7 +44,7 @@ function ingest(req, res, next) {
 				models.Tag.findAll().success(function (tags) {
 					// remove tags we already have
 					for (var i = 0; i < tags.length; i++)
-						if (var j = tagsNeeded.indexOf(tags[i].name))
+						if ((var j = tagsNeeded.indexOf(tags[i].name)))
 							delete tagsNeeded[j];
 
 					console.log(tags);
