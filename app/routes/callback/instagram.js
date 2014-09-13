@@ -97,7 +97,7 @@ function ingest(req, res, next) {
 										for (var i = 0; i < image.tags.length; i++)
 										 	tags.push(tags[image.tags[i]]);
 
-										media.addTags(tags)
+										media.setTags(tags)
 											.error(function (err) {
 												console.log('error adding tags to media');
 												console.log(err);
