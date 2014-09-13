@@ -12,14 +12,15 @@ function verify(req, res, next) {
 }
 
 function ingest(req, res, next) {
-	res.status(200).end();
-
+	var inst = req.app.get('instagram');
 	var changes = req.body;
+
+	res.status(200).end();
 
 	for (var i = 0; i < changes.length; i++) {
 		var change = changes[i];
 
-		Instagram.tags.recent({
+		inst.tags.recent({
 			name: change.object_id,
 
 			complete: function (data, pagination) {
