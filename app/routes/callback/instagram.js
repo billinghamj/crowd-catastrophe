@@ -42,6 +42,8 @@ function ingest(req, res, next) {
 				var models = req.app.get('models');
 
 				models.Tag.findAll().success(function (tags) {
+					console.log(tagsNeeded);
+
 					// remove tags we already have
 					for (var i = 0; i < tags.length; i++)
 					{
