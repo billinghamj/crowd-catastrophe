@@ -46,19 +46,16 @@ function ingest(req, res, next) {
 
 				req.app.get('models').Media
 					.bulkCreate(objects)
-					.success(function () {
-						console.log('success');
-					})
 					.error(function (err) {
+						console.log('error saving media');
 						console.log(err);
 					});
 			},
 
 			error: function (errorMessage, errorObject, caller) {
-				console.log('error!');
+				console.log('error getting media');
 				console.log(errorMessage);
 				console.log(errorObject);
-				console.log(caller);
 			}
 		});
 	}
