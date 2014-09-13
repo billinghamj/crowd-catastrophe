@@ -8,7 +8,7 @@ function setup(app) {
 function verify(req, res, next) {
 	var inst = req.app.get('instagram');
 
-	inst.subscriptions.handshake(request, response);
+	inst.subscriptions.handshake(req, res);
 }
 
 function ingest(req, res, next) {
