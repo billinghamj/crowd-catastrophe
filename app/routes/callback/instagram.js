@@ -24,13 +24,15 @@ function ingest(req, res, next) {
 			name: change.object_id,
 
 			complete: function (images, pagination) {
+				console.log('#' + change.object_id + ':');
+
 				for (var i = 0; i < images.length; i++) {
 					var image = images[i];
 
 					var thumb = image.images.thumbnail.url;
 					var standard = image.images.standard_resolution.url;
 
-					console.log('#' + change.object_id + ': ' + standard);
+					console.log(standard);
 				}
 			},
 
