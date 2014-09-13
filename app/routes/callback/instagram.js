@@ -39,6 +39,11 @@ function ingest(req, res, next) {
 				for (var i = 0; i < images.length; i++)
 					tagsNeeded = tagsNeeded.concat(images[i].tags);
 
+				// deduplicate
+				tagsNeeded = tagsNeeded.filter(function (obj, pos, arr) {
+					return arr.indexOf(obj) == pos;
+				});
+
 				var models = req.app.get('models');
 
 				models.Tag.findAll().success(function (tags) {
