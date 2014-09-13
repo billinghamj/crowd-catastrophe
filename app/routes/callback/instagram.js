@@ -40,7 +40,8 @@ function ingest(req, res, next) {
 					});
 				}
 
-				Media.bulkCreate(objects)
+				req.app.get('models').Media
+					.bulkCreate(objects)
 					.success(function () {
 						console.log('success');
 					})
