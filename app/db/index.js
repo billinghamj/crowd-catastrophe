@@ -4,11 +4,14 @@ var models = require('../models/db');
 module.exports = setup;
 
 function setup(app) {
-	console.log(app.get('databaseName'),
+	var sequelize = new Sequelize(
+		app.get('databaseName'),
 		app.get('databaseUsername'),
-		app.get('databasePassword'));
+		app.get('databasePassword'),
+		{
+			host: app.get('databaseHost'),
+			port: app.get('databasePort')
+		});
 
-	var sequelize = new Sequelize('mysql://'+app.get('databaseUsername')+':'+app.get('databasePassword')+'@127.0.0.1:3306/'+app.get('databaseName'), {});
-  console.log(sequelize)
 	return models(sequelize);
 }

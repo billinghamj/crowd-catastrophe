@@ -24,6 +24,8 @@ app.set('view engine', 'handlebars');
 app.set('databaseName', process.env.DATABASE_NAME);
 app.set('databaseUsername', process.env.DATABASE_USERNAME);
 app.set('databasePassword', process.env.DATABASE_PASSWORD);
+app.set('databaseHost', process.env.DATABASE_HOST || '127.0.0.1');
+app.set('databasePort', process.env.DATABASE_PORT || 3306);
 app.set('instagram', Instagram);
 app.set('models', db(app));
 
