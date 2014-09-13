@@ -16,10 +16,15 @@ function setup(app) {
 	var modelsObject = models(sequelize);
 
 	modelsObject.Issue.hasMany(modelsObject.Tag, {through: 'issue_tags'});
+	modelsObject.Tag.belongsTo(modelsObject.Issue, {through: 'issue_tags'});
 	modelsObject.Media.hasMany(modelsObject.Tag, {through: 'tag_media'});
+	modelsObject.Tag.belongsTo(modelsObject.Media, {through: 'tag_media'});
 	modelsObject.Tag.hasMany(modelsObject.Media, {through: 'tag_media'});
+	modelsObject.Media.belongsTo(modelsObject.Tag, {through: 'tag_media'});
 	modelsObject.Tag.hasMany(modelsObject.Issue, {through: 'issue_tags'});
+	modelsObject.Issue.belongsTo(modelsObject.Tag, {through: 'issue_tags'});
 
-	sequelize.sync();
-	return modelsObject;
+	sequelize.sync().success(function() {
+		return modelsObject;
+	});
 }
