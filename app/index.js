@@ -16,6 +16,9 @@ app.engine('handlebars', expressHandlebars({
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'handlebars');
+app.set('databaseName', process.env.DBNAME);
+app.set('databaseUsername', process.env.DBUSER);
+app.set('databasePassword', process.env.DBPASS);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

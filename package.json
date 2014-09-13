@@ -1,25 +1,22 @@
 {
-	"license": "MIT",
-
-	"authors": [
-		"James Billingham <james@jamesbillingham.com> (http://jamesbillingham.com)",
-		"Will Evans <will@will3942.com> (http://will3942.com)"
-	],
-
-	"scripts": {
-		"start": "node app/index.js"
-	},
-
-	"dependencies": {
-		"express": "~4.8.8",
-		"body-parser": "~1.8.1",
-		"express-handlebars": "~1.0.3"
-	},
-
-	"devDependencies": {
-	},
-
-	"engines": {
-		"node": "0.10.x"
-	}
+  "name": "crowdcatastrophe",
+  "license": "MIT",
+  "authors": [
+    "James Billingham <james@jamesbillingham.com> (http://jamesbillingham.com)",
+    "Will Evans <will@will3942.com> (http://will3942.com)"
+  ],
+  "scripts": {
+    "start": "node app/index.js"
+  },
+  "dependencies": {
+    "express": "~4.8.8",
+    "body-parser": "~1.8.1",
+    "express-handlebars": "~1.0.3",
+    "sequelize": "~1.7.10",
+    "mysql": "~2.5.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": "0.10.x"
+  }
 }
