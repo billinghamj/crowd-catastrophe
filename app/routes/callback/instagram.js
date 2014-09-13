@@ -26,7 +26,6 @@ function ingest(req, res, next) {
 			name: change.object_id,
 
 			complete: function (images, pagination) {
-				var objects = [];
 
 				console.log('retrieved ' + images.length + ' images for #' + change.object_id);
 
@@ -36,20 +35,32 @@ function ingest(req, res, next) {
 					var thumb = image.images.thumbnail.url;
 					var standard = image.images.standard_resolution.url;
 
-					objects.push({
-						instagramId: image.id,
-						date: new Date(image.created_time * 1000),
-						thumbnailUrl: thumb,
-						imageUrl: standard
-					});
-				}
+					req.app.get('models').Tag
+						.findOrCreate({ name: change.object_id })
+						.success(function(tag, created) {
+							var object = {
+								instagramId: image.id,
+								date: new Date(image.created_time * 1000),
+								thumbnailUrl: thumb,
+								imageUrl: standard
+							};
 
-				req.app.get('models').Media
-					.bulkCreate(objects)
-					.error(function (err) {
-						console.log('error saving media');
-						console.log(err);
-					});
+							req.app.get('models').Media.create(object)
+								.success(function(media, created) {
+									tag.addMedia(media).error(function (err) {
+										console.log('error adding media to tag');
+										console.log(err);
+									});
+								})
+								.error(function (err) {
+									console.log('error saving media');
+									console.log(err);
+								});
+						})
+						.error(function (err) {
+							console.log(err);
+						});
+				}
 			},
 
 			error: function (errorMessage, errorObject, caller) {
