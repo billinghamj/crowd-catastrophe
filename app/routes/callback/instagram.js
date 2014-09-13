@@ -19,7 +19,7 @@ function ingest(req, res, next) {
 		return;
 	}
 
-	cooloff = true;
+	//cooloff = true;
 
 	setTimeout(function () {
 		cooloff = false;
