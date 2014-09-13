@@ -13,5 +13,7 @@ function setup(app) {
 			port: app.get('databasePort')
 		});
 
-	return models(sequelize);
+	var modelsObject = models(sequelize);
+	sequelize.sync();
+	return modelsObject;
 }
