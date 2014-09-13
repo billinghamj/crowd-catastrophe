@@ -13,18 +13,14 @@ function setup(app) {
 			port: app.get('databasePort')
 		});
 
-	var modelsObject = models(sequelize);
+	var m = models(sequelize);
 
-	modelsObject.Issue.hasMany(modelsObject.Tag, {through: 'issue_tags'});
-	modelsObject.Tag.belongsTo(modelsObject.Issue, {through: 'issue_tags'});
-	modelsObject.Media.hasMany(modelsObject.Tag, {through: 'tag_media'});
-	modelsObject.Tag.belongsTo(modelsObject.Media, {through: 'tag_media'});
-	modelsObject.Tag.hasMany(modelsObject.Media, {through: 'tag_media'});
-	modelsObject.Media.belongsTo(modelsObject.Tag, {through: 'tag_media'});
-	modelsObject.Tag.hasMany(modelsObject.Issue, {through: 'issue_tags'});
-	modelsObject.Issue.belongsTo(modelsObject.Tag, {through: 'issue_tags'});
+	m.Issue.hasMany(m.Tag, { through: 'issue_tags' });
+	m.Media.hasMany(m.Tag, { through: 'tag_media' });
+	m.Tag.hasMany(m.Media, { through: 'tag_media' });
+	m.Tag.hasMany(m.Issue, { through: 'issue_tags' });
 
-	sequelize.sync().success(function() {
-		return modelsObject;
-	});
+	sequelize.sync();
+
+	return m;
 }
