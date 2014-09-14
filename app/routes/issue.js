@@ -68,8 +68,7 @@ function show(req, res, next) {
 				+ ' JOIN issue_tags it ON it.tagId = tm.tagId'
 				+ ' JOIN issues i ON i.id = it.issueId'
 				+ ' WHERE i.id = ' + issue.id
-				+ ' ORDER BY m.id DESC'
-				+ ' LIMIT 100';
+				+ ' ORDER BY m.id DESC';
 
 			req.app.get('models')
 				._sequelize.query(sql, req.app.get('models').Media)
