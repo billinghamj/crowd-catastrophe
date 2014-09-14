@@ -22,11 +22,9 @@ function index(req, res, next) {
 function create(req, res, next) {
 	req.app.get('models')
 		.Issue.create(req.body)
+		.error(next)
 		.success(function (issue) {
 			res.redirect(303, '/issues/' + issue.id);
-		})
-		.error(function (error) {
-			next(error);
 		});
 }
 
@@ -48,10 +46,14 @@ function show(req, res, next) {
 function update(req, res, next) {
 	req.app.get('models')
 		.Issue.find({ where: { id: req.params.id } })
+		.error(function () {
+			res.status(404).end();
+		})
 		.success(function (issue) {
 			var tags = req.body.tags.split(/\s/);
 
 			issue.updateAttributes(req.body)
+				.error(next)
 				.success(function (issue) {
 					var tagObjs = [];
 
@@ -62,29 +64,19 @@ function update(req, res, next) {
 							return;
 
 						issue.setTags(tagObjs)
+							.error(next)
 							.success(function () {
 								res.redirect(303, '/issues/' + issue.id);
-							})
-							.error(function () {
-								res.redirect(303, '/issues/' + issue.id + '/edit?failure');
 							});
 					}
 
-					for (var i = 0; i < tags.length; i++)
+					for (var i = 0; i < tags.length; i++) {
 						req.app.get('models')
 							.Tag.findOrCreate({ name: tags[i] })
-							.success(success)
-							.error(function (err) {
-								console.log('fuckssake');
-								console.log(err);
-							});
-				})
-				.error(function () {
-					res.redirect(303, '/issues/' + issue.id + '/edit?failure');
+							.error(next)
+							.success(success);
+					}
 				});
-		})
-		.error(function () {
-			res.status(404).end();
 		});
 }
 
@@ -93,11 +85,9 @@ function destroy(req, res, next) {
 		.Issue.find({ where: { id: req.params.id } })
 		.success(function (issue) {
 			issue.destroy()
+				.error(next)
 				.success(function () {
 					res.redirect(303, '/issues/?success');
-				})
-				.error(function () {
-					res.status(500).end();
 				});
 		})
 		.error(function () {
@@ -108,25 +98,25 @@ function destroy(req, res, next) {
 function updatePage(req, res, next) {
 	req.app.get('models')
 		.Issue.find({ where: { id: req.params.id } })
+		.error(function () {
+			res.status(404).end();
+		})
 		.success(function (issue) {
 			issue.getTags()
 				.success(function (tags) {
 					issue.tags = tags.map(function (t) { return t.name; }).join('\r\n');
 					res.render('issue/update', { issue: issue });
 				});
-		})
-		.error(function () {
-			res.status(404).end();
 		});
 }
 
 function destroyPage(req, res, next) {
 	req.app.get('models')
 		.Issue.find({ where: { id: req.params.id } })
-		.success(function (issue) {
-			res.render('issue/destroy', { issue: issue });
-		})
 		.error(function () {
 			res.status(404).end();
+		})
+		.success(function (issue) {
+			res.render('issue/destroy', { issue: issue });
 		});
 }

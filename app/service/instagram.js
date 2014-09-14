@@ -1,9 +1,13 @@
 module.exports = setup;
+
 function setup(app) {
 	var models = app.get('models');
-	models._sequelize.query("SELECT * FROM tags t JOIN issue_tags it ON it.tagId = t.name JOIN issues i ON it.issueId = i.id", models.Tag).success(function (tags) {
-		ingest(tags, models);
-	});
+	var sql = 'SELECT * FROM tags t JOIN issue_tags it ON it.tagId = t.name JOIN issues i ON it.issueId = i.id';
+
+	models._sequelize.query(sql, models.Tag)
+		.success(function (tags) {
+			ingest(tags, models);
+		});
 }
 
 function ingest(tags, models) {
