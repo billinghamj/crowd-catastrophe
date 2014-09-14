@@ -35,11 +35,26 @@ function createPage(req, res, next) {
 function show(req, res, next) {
 	req.app.get('models')
 		.Issue.find({ where: { id: req.params.id } })
-		.success(function (issue) {
-			res.render('issue/show', { issue: issue });
-		})
 		.error(function () {
 			res.status(404).end();
+		})
+		.success(function (issue) {
+			var sql =
+				'SELECT *'
+				+ ' FROM media m'
+				+ ' JOIN tag_media tm ON tm.mediumId = m.id'
+				+ ' JOIN issue_tags it ON it.tagId = tm.tagId'
+				+ ' JOIN issues i ON i.id = it.issueId'
+				+ ' WHERE i.id = ' + issue.id
+				+ ' LIMIT 100';
+
+			req.app.get('models')
+				._sequelize.query(sql, models.Media)
+				.error(next)
+				.success(function (media) {
+					issue.media = media;
+					res.render('issue/show', { issue: issue });
+				});
 		});
 }
 

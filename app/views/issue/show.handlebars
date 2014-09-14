@@ -3,6 +3,12 @@
 		{{#with issue}}
 			<h1>{{{name}}}</h1>
 			<p>{{{description}}}</p>
+
+			<ul>
+				{{#each media}}
+					<li>{{{instagramId}}}</li>
+				{{/each}}
+			</ul>
 		{{/with}}
 	</div>
 </div>
