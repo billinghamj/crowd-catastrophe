@@ -5,7 +5,6 @@ function setup(app) {
 	var sql = 'SELECT * FROM tags t JOIN issue_tags it ON it.tagId = t.id JOIN issues i ON it.issueId = i.id';
 
 	setInterval(function () {
-
 		models._sequelize.query(sql, models.Tag)
 			.success(function (tags) {
 				ingest(app, tags);
@@ -51,7 +50,7 @@ function getInstagramMedia(app, tags, callback) {
 				name: tags[j].name,
 
 				error: function (errorMessage, errorObject, caller) {
-					errors.push(errorMessage);
+					errors.push(errorObject);
 					check();
 				},
 
