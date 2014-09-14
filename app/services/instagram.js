@@ -16,70 +16,108 @@ function ingest(app, tags) {
 	var inst = app.get('instagram');
 	var models = app.get('models');
 
-	for (var t = 0; t < tags.length; t++) {
-		var tag = tags[t].name;
+	getInstagramMedia(app, tags, function (err, media) {
+		if (err) {
+			console.log('error getting instagram media');
+			console.log(err);
+			return;
+		}
 
+		console.log('retrieved ' + media.length + ' media');
+
+		importInstagramMedia(app, media, function (err, media) {
+			if (err) {
+				console.log('error importing media');
+				console.log(err);
+				return;
+			}
+
+			console.log('created ' + media.length + ' new media items');
+		});
+	});
+}
+
+function getInstagramMedia(app, tags, callback) {
+	var inst = app.get('instagram');
+
+	var results = [];
+	var errors = [];
+	var count = 0;
+
+	for (var i = 0; i < tags.length; i++) {
 		inst.tags.recent({
-			name: tag,
+			name: tags[i].name,
 
 			error: function (errorMessage, errorObject, caller) {
-				console.log('error getting media');
-				console.log(errorMessage);
-				console.log(errorObject);
+				errors.push(errorMessage);
+				check();
 			},
 
-			complete: function (images, pagination) {
-				console.log('retrieved ' + images.length + ' images for #' + tag);
-
-				// string array of all required tags
-				var tagsNeeded = [];
-				for (var ti = 0; ti < images.length; ti++)
-					tagsNeeded = tagsNeeded.concat(images[ti].tags);
-
-				getTags(app, tagsNeeded, function (err, tags) {
-					if (err) {
-						console.log('error getting needed tags');
-						console.log(err);
-						return;
-					}
-
-					for (var i = 0; i < images.length; i++) {
-						var image = images[i];
-
-						var thumb = image.images.thumbnail.url;
-						var standard = image.images.standard_resolution.url;
-
-						var media = {
-							instagramId: image.id,
-							date: new Date(image.created_time * 1000),
-							thumbnailUrl: thumb,
-							imageUrl: standard
-						};
-
-						models.Media.create(media)
-							.error(function (err) {
-								if (err.code === 'ER_DUP_ENTRY')
-									return;
-
-								console.log('error creating media');
-								console.log(err);
-							})
-							.success(function (media, created) {
-								var mediaTags = [];
-								for (var i = 0; i < image.tags.length; i++)
-								 	mediaTags.push(tags[image.tags[i]]);
-
-								media.setTags(mediaTags)
-									.error(function (err) {
-										console.log('error adding tags to media');
-										console.log(err);
-									});
-							});
-					}
-				});
+			complete: function (media, pagination) {
+				results.push(media);
+				check();
 			}
 		});
 	}
+
+	function check() {
+		if (count !== tags.length)
+			return;
+
+		if (errors.length) {
+			var err = new Error('Failed to retrieve media');
+			err.innerErrors = errors;
+			callback(err);
+			return;
+		}
+
+		var media = [];
+		for (var i = 0; i < results.length; i++)
+			media = media.concat(results[i]);
+
+		callback(null, media);
+	}
+}
+
+function importInstagramMedia(app, media, callback) {
+	var tagsNeeded = [];
+	for (var i = 0; i < media.length; i++)
+		tagsNeeded = tagsNeeded.concat(media[i].tags);
+
+	getTags(app, tagsNeeded, function (err, tags) {
+		if (err) {
+			callback(err);
+			return;
+		}
+
+		var results = [];
+		var errors = [];
+		var count = 0;
+
+		for (var i = 0; i < media.length; i++) {
+			createMedium(app, tags, media[i], function (err, medium) {
+				count++;
+
+				if (err) {
+					if (err.code !== 'ER_DUP_ENTRY')
+						errors.push(err);
+				} else {
+					results.push(medium);
+				}
+
+				if (count === media.length) {
+					if (errors.length) {
+						var err = new Error('Failed to import media');
+						err.innerErrors = errors;
+						callback(err);
+						return;
+					}
+
+					callback(null, results);
+				}
+			});
+		}
+	});
 }
 
 function getTags(app, tags, callback) {
@@ -122,6 +160,32 @@ function getTags(app, tags, callback) {
 					delete tagMap;
 
 					callback(null, tagMap);
+				});
+		});
+}
+
+function createMedium(app, tags, medium, callback) {
+	var thumb = medium.images.thumbnail.url;
+	var standard = medium.images.standard_resolution.url;
+
+	var obj = {
+		instagramId: medium.id,
+		date: new Date(medium.created_time * 1000),
+		thumbnailUrl: thumb,
+		imageUrl: standard
+	};
+
+	models.Media.create(obj)
+		.error(callback)
+		.success(function (medium, created) {
+			var mediumTags = [];
+			for (var i = 0; i < medium.tags.length; i++)
+			 	mediumTags.push(tags[medium.tags[i]]);
+
+			medium.setTags(medium)
+				.error(callback)
+				.success(function () {
+					callback(null, medium);
 				});
 		});
 }
