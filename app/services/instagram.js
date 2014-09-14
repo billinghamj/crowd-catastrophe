@@ -98,7 +98,6 @@ function ingest(tags, models) {
 											console.log(err);
 										});
 								});
-							}
 						}
 					});
 			}
