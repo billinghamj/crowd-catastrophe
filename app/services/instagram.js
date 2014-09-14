@@ -50,13 +50,11 @@ function getInstagramMedia(app, tags, callback) {
 			error: function (errorMessage, errorObject, caller) {
 				errors.push(errorMessage);
 				check();
-				console.log('e' + count);
 			},
 
 			complete: function (media, pagination) {
 				results.push(media);
 				check();
-				console.log('c' + count);
 			}
 		});
 	}
@@ -129,6 +127,10 @@ function getTags(app, tags, callback) {
 	models.Tag.findAll()
 		.error(callback)
 		.success(function (existingTags) {
+			// remove non-ascii chars
+			for (var i = 0; i < tags.length; i++)
+				tags[i] = tags[i].replace(/[^\x00-\x7F]/g, '');
+
 			// deduplicate
 			tags = tags.filter(function (obj, pos, arr) {
 				return arr.indexOf(obj) == pos;
@@ -181,6 +183,15 @@ function createMedium(app, tags, medium, callback) {
 	models.Media.create(obj)
 		.error(callback)
 		.success(function (medium, created) {
+			// remove non-ascii chars
+			for (var i = 0; i < medium.tags.length; i++)
+				medium.tags[i] = medium.tags[i].replace(/[^\x00-\x7F]/g, '');
+
+			// deduplicate
+			medium.tags = medium.tags.filter(function (obj, pos, arr) {
+				return arr.indexOf(obj) == pos;
+			});
+
 			var mediumTags = [];
 			for (var i = 0; i < medium.tags.length; i++)
 			 	mediumTags.push(tags[medium.tags[i]]);
