@@ -45,6 +45,7 @@ function getInstagramMedia(app, tags, callback) {
 
 	for (var i = 0; i < tags.length; i++) {
 		var j = i;
+
 		setTimeout(function () {
 			inst.tags.recent({
 				name: tags[j].name,
@@ -61,7 +62,7 @@ function getInstagramMedia(app, tags, callback) {
 					check();
 				}
 			});
-		}, 100 * j);
+		}, 250 * j);
 	}
 
 	function check() {
