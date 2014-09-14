@@ -60,7 +60,9 @@ function getInstagramMedia(app, tags, callback) {
 
 				check();
 			});
-	}();
+	}
+
+	go();
 
 	function check() {
 		count++;
