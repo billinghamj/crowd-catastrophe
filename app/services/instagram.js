@@ -13,9 +13,6 @@ function setup(app) {
 }
 
 function ingest(app, tags) {
-	var inst = app.get('instagram');
-	var models = app.get('models');
-
 	getInstagramMedia(app, tags, function (err, media) {
 		if (err) {
 			console.log('error getting instagram media');
