@@ -6,7 +6,9 @@
 
 			<ul>
 				{{#each media}}
-					<li>{{{instagramId}}}</li>
+					<li data-id="{{{instagramId}}}" data-url="{{{imageUrl}}}">
+						<img src="{{{thumbnailUrl}}}" />
+					</li>
 				{{/each}}
 			</ul>
 		{{/with}}
