@@ -96,7 +96,6 @@ function importInstagramMedia(app, media, callback) {
 				count++;
 
 				if (err) {
-					console.log(err);
 					if (err.code !== 'ER_DUP_ENTRY')
 						errors.push(err);
 				} else {
@@ -192,17 +191,17 @@ function createMedium(app, tags, medium, callback) {
 				return arr.indexOf(obj) == pos;
 			});
 
-			// remove nulls
-			var cleanedTags = [];
-			for (var i = 0; i < medium.tags.length; i++)
-				if (medium.tags[i])
-					cleanedTags.push(medium.tags[i]);
-			medium.tags = cleanedTags;
-			delete cleanedTags;
-
 			var mediumTags = [];
 			for (var i = 0; i < medium.tags.length; i++)
 			 	mediumTags.push(tags[medium.tags[i]]);
+
+			// remove nulls
+			var cleanedTags = [];
+			for (var i = 0; i < mediumTags.length; i++)
+				if (mediumTags[i])
+					cleanedTags.push(mediumTags[i]);
+			mediumTags = cleanedTags;
+			delete cleanedTags;
 
 			newMedium.setTags(mediumTags)
 				.error(callback)
