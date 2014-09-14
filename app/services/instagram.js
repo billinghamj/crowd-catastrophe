@@ -158,13 +158,13 @@ function getTags(app, tags, callback) {
 					tags = existingTags.concat(newTags);
 
 					// array<Tag> -> map<string, Tag>
-					tagMap = {};
+					var tagMap = {};
 					for (var i = 0; i < tags.length; i++)
 						tagMap[tags[i].name] = tags[i];
 					tags = tagMap;
 					delete tagMap;
 
-					callback(null, tagMap);
+					callback(null, tags);
 				});
 		});
 }
