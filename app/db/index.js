@@ -11,7 +11,7 @@ function setup(app) {
 		{
 			host: app.get('databaseHost'),
 			port: app.get('databasePort'),
-			logging: false
+			logging: true
 		});
 
 	var m = models(sequelize);
