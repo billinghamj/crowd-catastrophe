@@ -4,12 +4,15 @@ var methodOverride = require('method-override');
 var expressHandlebars = require('express-handlebars');
 var http = require('http');
 var path = require('path');
-var Instagram = require('instagram-node-lib');
+var Instagram = require('instagram-node');
 var db = require('./db');
 var services = require('./services');
 
-Instagram.set('client_id', process.env.INSTAGRAM_CLIENT_ID);
-Instagram.set('client_secret', process.env.INSTAGRAM_CLIENT_SECRET);
+var instagram = Instagram.instagram();
+instagram.use({
+	client_id: process.env.INSTAGRAM_CLIENT_ID,
+	client_secret: process.env.INSTAGRAM_CLIENT_SECRET
+});
 
 var routes = require('./routes');
 var app = express();
@@ -28,7 +31,7 @@ app.set('databaseUsername', process.env.DATABASE_USERNAME);
 app.set('databasePassword', process.env.DATABASE_PASSWORD);
 app.set('databaseHost', process.env.DATABASE_HOST || '127.0.0.1');
 app.set('databasePort', process.env.DATABASE_PORT || 3306);
-app.set('instagram', Instagram);
+app.set('instagram', instagram);
 app.set('models', db(app));
 
 app.use(bodyParser.urlencoded({ extended: true }));

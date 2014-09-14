@@ -46,23 +46,15 @@ function getInstagramMedia(app, tags, callback) {
 	for (var i = 0; i < tags.length; i++) {
 		var j = i;
 
-		setTimeout(function () {
-			inst.tags.recent({
-				name: tags[j].name,
-
-				error: function (errorMessage, errorObject, caller) {
-					var err = new Error(errorMessage);
-					err.returnedObject = errorObject;
+		inst.tag_media_recent(tags[j].name,
+			function (err, media, pagination, remaining, limit) {
+				if (err)
 					errors.push(err);
-					check();
-				},
-
-				complete: function (media, pagination) {
+				else
 					results.push(media);
-					check();
-				}
+
+				check();
 			});
-		}, 250 * j);
 	}
 
 	function check() {

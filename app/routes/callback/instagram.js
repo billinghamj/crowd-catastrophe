@@ -6,9 +6,7 @@ function setup(app) {
 }
 
 function verify(req, res, next) {
-	var inst = req.app.get('instagram');
-
-	inst.subscriptions.handshake(req, res);
+	res.send(req.query['hub.challenge']);
 }
 
 var cooloff = false;
@@ -35,16 +33,14 @@ function ingest(req, res, next) {
 
 		console.log('notified of change to #' + change.object_id);
 
-		inst.tags.recent({
-			name: change.object_id,
+		inst.tag_media_recent(change.object_id,
+			function (err, images, pagination, remaining, limit) {
+				if (err) {
+					console.log('error getting media');
+					console.log(err);
+					return;
+				}
 
-			error: function (errorMessage, errorObject, caller) {
-				console.log('error getting media');
-				console.log(errorMessage);
-				console.log(errorObject);
-			},
-
-			complete: function (images, pagination) {
 				console.log('retrieved ' + images.length + ' images for #' + change.object_id);
 
 				// string array of all required tags
@@ -128,7 +124,6 @@ function ingest(req, res, next) {
 							}
 						});
 				});
-			}
-		});
+			});
 	}
 }
