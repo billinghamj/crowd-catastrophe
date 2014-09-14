@@ -57,7 +57,6 @@ function getInstagramMedia(app, tags, callback) {
 
 					check();
 				});
-			});
 		}, 250 * j);
 	}
 
