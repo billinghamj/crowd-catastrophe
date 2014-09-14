@@ -3,7 +3,7 @@ module.exports = setup;
 function setup(app) {
 	setInterval(function () {
 		var models = app.get('models');
-		var sql = 'SELECT * FROM tags t JOIN issue_tags it ON it.tagId = t.name JOIN issues i ON it.issueId = i.id';
+		var sql = 'SELECT * FROM tags t JOIN issue_tags it ON it.tagId = t.id JOIN issues i ON it.issueId = i.id';
 
 		models._sequelize.query(sql, models.Tag)
 			.success(function (tags) {
