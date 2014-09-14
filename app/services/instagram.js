@@ -48,11 +48,13 @@ function getInstagramMedia(app, tags, callback) {
 			error: function (errorMessage, errorObject, caller) {
 				errors.push(errorMessage);
 				check();
+				console.log('e' + count);
 			},
 
 			complete: function (media, pagination) {
 				results.push(media);
 				check();
+				console.log('c' + count);
 			}
 		});
 	}
