@@ -6,6 +6,7 @@ var http = require('http');
 var path = require('path');
 var Instagram = require('instagram-node-lib');
 var db = require('./db');
+var services = require('./services');
 
 Instagram.set('client_id', process.env.INSTAGRAM_CLIENT_ID);
 Instagram.set('client_secret', process.env.INSTAGRAM_CLIENT_SECRET);
@@ -44,6 +45,7 @@ app.use(methodOverride(function (req, res) {
 routes(app);
 
 module.exports = app;
+module.exports.services = services;
 
 /* istanbul ignore if : not used during unit testing */
 if (require.main === module) {
@@ -53,4 +55,6 @@ if (require.main === module) {
 	server.listen(port, function () {
 		console.info('Express server listening on port ' + app.get('port'));
 	});
+
+	services(app);
 }
