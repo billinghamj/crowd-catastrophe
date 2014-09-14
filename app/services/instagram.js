@@ -58,6 +58,8 @@ function getInstagramMedia(app, tags, callback) {
 	}
 
 	function check() {
+		count++;
+
 		if (count !== tags.length)
 			return;
 
