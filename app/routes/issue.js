@@ -20,6 +20,8 @@ function index(req, res, next) {
 }
 
 function create(req, res, next) {
+	var tags = req.body.tags.split(/\s+/);
+
 	req.app.get('models')
 		.Issue.create(req.body)
 		.error(next)
