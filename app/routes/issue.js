@@ -65,7 +65,7 @@ function update(req, res, next) {
 			res.status(404).end();
 		})
 		.success(function (issue) {
-			var tags = req.body.tags.split(/\s/);
+			var tags = req.body.tags.split(/\s+/);
 
 			issue.updateAttributes(req.body)
 				.error(next)
