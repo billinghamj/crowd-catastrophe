@@ -13,6 +13,8 @@ function setup(app) {
 }
 
 function ingest(app, tags) {
+	console.log('ingesting for ' + tags.length + ' tags');
+
 	getInstagramMedia(app, tags, function (err, media) {
 		if (err) {
 			console.log('error getting instagram media');
