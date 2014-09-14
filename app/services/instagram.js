@@ -185,7 +185,7 @@ function createMedium(app, tags, medium, callback) {
 
 	models.Media.create(obj)
 		.error(callback)
-		.success(function (medium) {
+		.success(function (newMedium) {
 			// remove non-ascii chars
 			for (var i = 0; i < medium.tags.length; i++)
 				medium.tags[i] = medium.tags[i].replace(/[^\x00-\x7F]/g, '');
@@ -199,10 +199,10 @@ function createMedium(app, tags, medium, callback) {
 			for (var i = 0; i < medium.tags.length; i++)
 			 	mediumTags.push(tags[medium.tags[i]]);
 
-			medium.setTags(medium)
+			newMedium.setTags(mediumTags)
 				.error(callback)
 				.success(function () {
-					callback(null, medium);
+					callback(null, newMedium);
 				});
 		});
 }
