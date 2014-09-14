@@ -12,7 +12,7 @@ function setup(app) {
 			host: app.get('databaseHost'),
 			port: app.get('databasePort'),
 			charset: 'utf16',
-			logging: true
+			logging: false
 		});
 
 	var m = models(sequelize);
