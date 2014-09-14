@@ -49,7 +49,7 @@ function show(req, res, next) {
 				+ ' LIMIT 100';
 
 			req.app.get('models')
-				._sequelize.query(sql, models.Media)
+				._sequelize.query(sql, req.app.get('models').Media)
 				.error(next)
 				.success(function (media) {
 					issue.media = media;
