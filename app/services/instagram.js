@@ -46,7 +46,7 @@ function getInstagramMedia(app, tags, callback) {
 	var i = 0;
 
 	function go() {
-		inst.tag_media_recent(tags[j].name,
+		inst.tag_media_recent(tags[i].name,
 			function (err, media, pagination, remaining, limit) {
 				if (err)
 					errors.push(err);
