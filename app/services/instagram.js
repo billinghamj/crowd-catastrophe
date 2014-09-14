@@ -185,7 +185,7 @@ function createMedium(app, tags, medium, callback) {
 
 	models.Media.create(obj)
 		.error(callback)
-		.success(function (medium, created) {
+		.success(function (medium) {
 			// remove non-ascii chars
 			for (var i = 0; i < medium.tags.length; i++)
 				medium.tags[i] = medium.tags[i].replace(/[^\x00-\x7F]/g, '');
