@@ -11,7 +11,7 @@ module.exports = {
 				createdAt: { type: DataTypes.DATE },
 				updatedAt: { type: DataTypes.DATE }
 			},
-			{ engine: 'InnoDB', charset: 'latin1' }
+			{ engine: 'InnoDB', charset: 'utf16' }
 		);
 
 		migration.createTable(
@@ -24,7 +24,7 @@ module.exports = {
 				createdAt: { type: DataTypes.DATE },
 				updatedAt: { type: DataTypes.DATE }
 			},
-			{ engine: 'InnoDB', charset: 'latin1' }
+			{ engine: 'InnoDB', charset: 'utf16' }
 		);
 
 		migration.createTable(
@@ -34,7 +34,7 @@ module.exports = {
 				createdAt: { type: DataTypes.DATE },
 				updatedAt: { type: DataTypes.DATE }
 			},
-			{ engine: 'InnoDB', charset: 'latin1' }
+			{ engine: 'InnoDB', charset: 'utf16' }
 		);
 
 		done();
