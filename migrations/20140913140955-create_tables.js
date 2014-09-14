@@ -30,7 +30,8 @@ module.exports = {
 		migration.createTable(
 			'tags',
 			{
-				name: { type: DataTypes.STRING, allowNull: false, primaryKey: true, unique: true },
+				id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+				name: { type: DataTypes.STRING, allowNull: false, unique: true },
 				createdAt: { type: DataTypes.DATE },
 				updatedAt: { type: DataTypes.DATE }
 			},
