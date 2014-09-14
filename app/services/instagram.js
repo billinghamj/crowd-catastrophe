@@ -50,7 +50,9 @@ function getInstagramMedia(app, tags, callback) {
 				name: tags[j].name,
 
 				error: function (errorMessage, errorObject, caller) {
-					errors.push(errorObject);
+					var err = new Error(errorMessage);
+					err.returnedObject = errorObject;
+					errors.push(err);
 					check();
 				},
 
