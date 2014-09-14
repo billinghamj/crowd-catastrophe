@@ -44,8 +44,6 @@ function getInstagramMedia(app, tags, callback) {
 	var count = 0;
 
 	for (var i = 0; i < tags.length; i++) {
-		console.log(i, tags[i].name);
-
 		inst.tag_media_recent(tags[i].name,
 			function (err, media, pagination, remaining, limit) {
 				if (err)
@@ -98,9 +96,11 @@ function importInstagramMedia(app, media, callback) {
 				count++;
 
 				if (err) {
+					console.log(err);
 					if (err.code !== 'ER_DUP_ENTRY')
 						errors.push(err);
 				} else {
+					console.log(medium);
 					results.push(medium);
 				}
 
