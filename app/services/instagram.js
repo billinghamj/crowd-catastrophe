@@ -1,18 +1,20 @@
 module.exports = setup;
 
 function setup(app) {
+	var inst = app.get('instagram');
 	var models = app.get('models');
 	var sql = 'SELECT * FROM tags t JOIN issue_tags it ON it.tagId = t.name JOIN issues i ON it.issueId = i.id';
 
 	models._sequelize.query(sql, models.Tag)
 		.success(function (tags) {
-			ingest(tags, models);
+			ingest(inst, tags, models);
 		});
 }
 
-function ingest(tags, models) {
+function ingest(inst, tags, models) {
 	for (var t = 0; t < tags.length; t++) {
 		var tag = tags[t].name;
+
 		inst.tags.recent({
 			name: tag,
 
