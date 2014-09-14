@@ -1,14 +1,16 @@
 module.exports = setup;
 
 function setup(app) {
-	var inst = app.get('instagram');
-	var models = app.get('models');
-	var sql = 'SELECT * FROM tags t JOIN issue_tags it ON it.tagId = t.name JOIN issues i ON it.issueId = i.id';
+	setInterval(function () {
+		var inst = app.get('instagram');
+		var models = app.get('models');
+		var sql = 'SELECT * FROM tags t JOIN issue_tags it ON it.tagId = t.name JOIN issues i ON it.issueId = i.id';
 
-	models._sequelize.query(sql, models.Tag)
-		.success(function (tags) {
-			ingest(inst, tags, models);
-		});
+		models._sequelize.query(sql, models.Tag)
+			.success(function (tags) {
+				ingest(inst, tags, models);
+			});
+	}, 30 * 1000);
 }
 
 function ingest(inst, tags, models) {
