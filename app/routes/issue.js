@@ -24,7 +24,27 @@ function create(req, res, next) {
 		.Issue.create(req.body)
 		.error(next)
 		.success(function (issue) {
-			res.redirect(303, '/issues/' + issue.id);
+			var tagObjs = [];
+
+			function success(tag) {
+				tagObjs.push(tag);
+
+				if (tagObjs.length !== tags.length)
+					return;
+
+				issue.setTags(tagObjs)
+					.error(next)
+					.success(function () {
+						res.redirect(303, '/issues/' + issue.id);
+					});
+			}
+
+			for (var i = 0; i < tags.length; i++) {
+				req.app.get('models')
+					.Tag.findOrCreate({ name: tags[i] })
+					.error(next)
+					.success(success);
+			}
 		});
 }
 
