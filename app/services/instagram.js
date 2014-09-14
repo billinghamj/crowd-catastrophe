@@ -1,9 +1,10 @@
 module.exports = setup;
 
 function setup(app) {
+	var models = app.get('models');
+	var sql = 'SELECT * FROM tags t JOIN issue_tags it ON it.tagId = t.id JOIN issues i ON it.issueId = i.id';
+
 	setInterval(function () {
-		var models = app.get('models');
-		var sql = 'SELECT * FROM tags t JOIN issue_tags it ON it.tagId = t.id JOIN issues i ON it.issueId = i.id';
 
 		models._sequelize.query(sql, models.Tag)
 			.success(function (tags) {
@@ -170,6 +171,8 @@ function getTags(app, tags, callback) {
 }
 
 function createMedium(app, tags, medium, callback) {
+	var models = app.get('models');
+
 	var thumb = medium.images.thumbnail.url;
 	var standard = medium.images.standard_resolution.url;
 
